@@ -13,8 +13,18 @@ public class CallBackDemo {
                 .runningAsync(
                     new CallBack() {
                       @Override
-                      public void call() {
-                        System.out.println("callback called");
+                      public void pushData(String data) {
+                        System.out.println("Callback data :" + data);
+                      }
+
+                      @Override
+                      public void pushComplete() {
+                        System.out.println("Callback done!!");
+                      }
+
+                      @Override
+                      public void pushError(Exception ex) {
+                        System.out.println("Callback error,Got an exception. :" + ex);
                       }
                     });
           }
@@ -28,7 +38,10 @@ public class CallBackDemo {
   public void runningAsync(CallBack callBack) {
     System.out.println("I am running in separate thread.");
     sleep(1000);
-    callBack.call();
+    callBack.pushData("Data1");
+    callBack.pushData("Data2");
+    callBack.pushError(new RuntimeException("OOPs!!"));
+    callBack.pushComplete();
   }
 
   private void sleep(int duration) {
